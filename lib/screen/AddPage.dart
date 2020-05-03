@@ -29,10 +29,10 @@ class _AddPageState extends State<AddPage> {
 
   _storeData() async{
     if(_formKey.currentState.validate()){
-      StorageReference reference = FirebaseStorage.instance.ref().child("images/"+_title.text);
+      StorageReference reference = FirebaseStorage.instance.ref().child("images/"+DateTime.now().millisecondsSinceEpoch.toString());
       StorageUploadTask uploadTask = reference.putFile(_image);
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      String imageLink = taskSnapshot.ref.getDownloadURL().toString();
+      String imageLink = await taskSnapshot.ref.getDownloadURL();
 
       Firestore.instance.collection("grocery").add({
         'title': _title.text,

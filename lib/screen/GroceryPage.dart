@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as Path;
 
 class GroceryPage extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class _GroceryPageState extends State<GroceryPage> {
               child: Text(
                 "Loading Data ...",
                 style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             );
           }
@@ -43,13 +45,13 @@ class _GroceryPageState extends State<GroceryPage> {
                 children: <Widget>[
                   Container(
                     width: double.maxFinite,
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        // TODO IMAGE PROBLEM
                         Stack(
                           children: <Widget>[
                             CircleAvatar(
@@ -57,12 +59,13 @@ class _GroceryPageState extends State<GroceryPage> {
                               backgroundImage: NetworkImage(ds['image']),
                             ),
                             Container(
-                              padding:
-                              EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
                               decoration: BoxDecoration(
                                 color: Colors.grey.withOpacity(0.8),
                                 shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
                               ),
                               child: Text(
                                 ds['quantity'],
@@ -91,7 +94,7 @@ class _GroceryPageState extends State<GroceryPage> {
                                       fontWeight: FontWeight.normal),
                                 ),
                                 Text(
-                                  "INR "+ds['price'],
+                                  "INR " + ds['price'],
                                   style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.blueGrey,
@@ -105,10 +108,23 @@ class _GroceryPageState extends State<GroceryPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       IconButton(
-                                        onPressed: (){
-                                          Firestore.instance.collection("grocery").document(ds.documentID).delete();
+                                        onPressed: () {
+                                          String filePath = Uri.decodeFull(Path.basename(ds['image'])).replaceAll(new RegExp(r'(\?alt).*'), '');
+                                          FirebaseStorage.instance
+                                              .ref()
+                                              .child(filePath)
+                                              .delete()
+                                              .then((_) {
+                                            Firestore.instance
+                                                .collection("grocery")
+                                                .document(ds.documentID)
+                                                .delete();
+                                          });
                                         },
-                                        icon: Icon(Icons.delete,color: Colors.red,),
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
                                       )
                                     ],
                                   ),
