@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
       color: Colors.white,
       title: "Admin",
       home: OrderPage(),
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

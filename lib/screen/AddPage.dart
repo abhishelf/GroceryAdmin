@@ -82,15 +82,31 @@ class _AddPageState extends State<AddPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Container(
-                      height: 60,
-                      width: double.infinity,
-                      child: _image == null ? Center(
-                        child: Icon(Icons.image,),
-                      ) : Image(
-                        image: FileImage(_image),
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      child: Container(
+                        height: 140,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                          border: Border(
+                            top: BorderSide(color: Colors.blueGrey),
+                            left: BorderSide(color: Colors.blueGrey),
+                            bottom: BorderSide(color: Colors.blueGrey),
+                            right: BorderSide(color: Colors.blueGrey),
+                          ),
+                        ),
+                        child: _image == null ? Center(
+                          child: Icon(Icons.image,),
+                        ) : Image(
+                          image: FileImage(_image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
+                      onTap: (){
+                        getImageFromGallery();
+                      },
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 12.0),
@@ -141,18 +157,25 @@ class _AddPageState extends State<AddPage> {
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      padding: EdgeInsets.symmetric(vertical: 24.0),
                     ),
-                    MaterialButton(
-                      child: Text("Save",style: TextStyle(color: Colors.white),),
-                      color: _isLoading ? Colors.grey : Colors.blue,
-                      onPressed: (){
-                        if(_isLoading) return null;
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        _storeData();
-                      },
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50.0,
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12.0))
+                        ),
+                        child: Text("Save",style: TextStyle(color: Colors.white),),
+                        color: _isLoading ? Colors.grey : Colors.blue,
+                        onPressed: (){
+                          if(_isLoading) return null;
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          _storeData();
+                        },
+                      ),
                     )
                   ]
               ),

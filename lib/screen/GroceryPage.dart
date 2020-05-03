@@ -49,6 +49,7 @@ class _GroceryPageState extends State<GroceryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
+                        // TODO IMAGE PROBLEM
                         Stack(
                           children: <Widget>[
                             CircleAvatar(
