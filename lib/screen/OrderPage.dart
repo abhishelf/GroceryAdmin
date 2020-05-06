@@ -89,10 +89,12 @@ class _OrderPageState extends State<OrderPage> {
           }
 
           return ListView.builder(
-            reverse: true,
+            padding: EdgeInsets.only(bottom: 84.0),
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) {
-              DocumentSnapshot ds = snapshot.data.documents[index];
+              List rev = snapshot.data.documents.reversed.toList();
+              DocumentSnapshot ds = rev[index];
+              print(ds['name']);
               return ExpansionTile(
                 leading: GestureDetector(
                   child: CircleAvatar(
@@ -111,6 +113,7 @@ class _OrderPageState extends State<OrderPage> {
                     );
                   },
                 ),
+                trailing: ds['status'] == "0" ? Icon(Icons.local_shipping,color: Colors.orangeAccent,) : Icon(Icons.done_all,color: Colors.green,),
                 title: Text(
                   ds['name'],
                   style: TextStyle(color: Colors.black, fontSize: 16.0),
@@ -127,10 +130,14 @@ class _OrderPageState extends State<OrderPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          ds['date'] + "\n",
+                          ds['date'],
+                          style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                        ),
+                        Text(
+                          ds['payment'] == "" || ds['payment'].toString().isEmpty ? "COD" : ds['payment'],
                           style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
                         ),
-                        ds['status'] == "0" ? Icon(Icons.local_shipping,color: Colors.orangeAccent,) : Icon(Icons.done_all,color: Colors.green,),
+
                       ],
                     ),
                   ],
@@ -141,7 +148,6 @@ class _OrderPageState extends State<OrderPage> {
                     shrinkWrap: true,
                     itemCount: ds['cart'].length,
                     itemBuilder: (context, index) {
-                      print(ds['cart'].length);
                       List<String> list =
                           ds['cart'][index].toString().split('@');
                       return Container(
@@ -157,7 +163,7 @@ class _OrderPageState extends State<OrderPage> {
                                 TextStyle(color: Colors.blueGrey, fontSize: 14.0),
                           ),
                           trailing: Text(
-                            list[2],
+                            "Q : "+list[2],
                             style: TextStyle(
                                 color: Colors.orangeAccent,
                                 fontSize: 14.0,
