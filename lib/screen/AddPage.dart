@@ -34,10 +34,12 @@ class _AddPageState extends State<AddPage> {
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
       String imageLink = await taskSnapshot.ref.getDownloadURL();
 
+      String datePostfix = DateTime.now().millisecondsSinceEpoch.toString();
       Firestore.instance.collection("grocery").add({
         'title': _title.text,
         'price': _price.text,
         'quantity': _quantity.text,
+        'id': datePostfix,
         'image': imageLink
       }).then((value) => Navigator.pop(context)).catchError((error){
         setState(() {

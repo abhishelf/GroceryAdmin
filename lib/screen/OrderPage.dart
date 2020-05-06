@@ -89,6 +89,7 @@ class _OrderPageState extends State<OrderPage> {
           }
 
           return ListView.builder(
+            reverse: true,
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) {
               DocumentSnapshot ds = snapshot.data.documents[index];
@@ -97,7 +98,7 @@ class _OrderPageState extends State<OrderPage> {
                   child: CircleAvatar(
                     backgroundColor: (ds['status'] == '0')
                         ? Colors.orangeAccent
-                        : Colors.greenAccent,
+                        : Colors.green,
                     child: (ds['status'] == '0') ? Icon(Icons.shopping_cart,color: Colors.white,) : Icon(Icons.done,color: Colors.white,),
                   ),
                   onTap: () {
@@ -122,9 +123,15 @@ class _OrderPageState extends State<OrderPage> {
                       ds['phone'] + ", " + ds['address'] + "\n",
                       style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
                     ),
-                    Text(
-                      ds['date'] + "\n",
-                      style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          ds['date'] + "\n",
+                          style: TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                        ),
+                        ds['status'] == "0" ? Icon(Icons.local_shipping,color: Colors.orangeAccent,) : Icon(Icons.done_all,color: Colors.green,),
+                      ],
                     ),
                   ],
                 ),
@@ -137,22 +144,25 @@ class _OrderPageState extends State<OrderPage> {
                       print(ds['cart'].length);
                       List<String> list =
                           ds['cart'][index].toString().split('@');
-                      return ListTile(
-                        title: Text(
-                          list[0],
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                        ),
-                        subtitle: Text(
-                          "Total : " + list[1],
-                          style:
-                              TextStyle(color: Colors.blueGrey, fontSize: 14.0),
-                        ),
-                        trailing: Text(
-                          list[2],
-                          style: TextStyle(
-                              color: Colors.orangeAccent,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold),
+                      return Container(
+                        padding: EdgeInsets.only(left: 64.0),
+                        child: ListTile(
+                          title: Text(
+                            list[0],
+                            style: TextStyle(color: Colors.black, fontSize: 16.0),
+                          ),
+                          subtitle: Text(
+                            "Total : " + list[1],
+                            style:
+                                TextStyle(color: Colors.blueGrey, fontSize: 14.0),
+                          ),
+                          trailing: Text(
+                            list[2],
+                            style: TextStyle(
+                                color: Colors.orangeAccent,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       );
                     },
